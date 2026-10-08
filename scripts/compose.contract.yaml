@@ -1,0 +1,13 @@
+# Explicit synthetic model endpoints for local acceptance only. Never use as production model configuration.
+services:
+  api:
+    environment: &contract_models
+      RAG_EMBEDDING_URL: http://host.docker.internal:9009/embedding
+      RAG_EMBEDDING_KEY: contract-only
+      RAG_RERANK_URL: http://host.docker.internal:9009/rerank
+      RAG_RERANK_KEY: contract-only
+      RAG_DEEPSEEK_URL: http://host.docker.internal:9009/chat
+      RAG_DEEPSEEK_KEY: contract-only
+      RAG_DEEPSEEK_MODEL: contract-fixture
+  worker:
+    environment: *contract_models

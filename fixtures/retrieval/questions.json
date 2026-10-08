@@ -1,0 +1,50 @@
+[
+  {
+    "query": "支持哪些文档格式？",
+    "expected": "PDF、DOC、DOCX、TXT",
+    "relevant": true,
+    "relevant_document": "ingestion.txt"
+  },
+  {
+    "query": "扫描 PDF 没有文字层怎么办？",
+    "expected": "本地 OCR",
+    "relevant": true,
+    "relevant_document": "ingestion.txt"
+  },
+  {
+    "query": "文件没修改会重新计算向量吗？",
+    "expected": "内容哈希，未变化文件不调用 Embedding",
+    "relevant": true,
+    "relevant_document": "synchronization.txt"
+  },
+  {
+    "query": "目录扫描失败会删除旧资料吗？",
+    "expected": "不执行删除",
+    "relevant": true,
+    "relevant_document": "synchronization.txt"
+  },
+  {
+    "query": "RRF 用来做什么？",
+    "expected": "融合关键词和向量召回",
+    "relevant": true,
+    "relevant_document": "retrieval.txt"
+  },
+  {
+    "query": "它支持连续追问吗？",
+    "expected": "多轮改写独立检索问题",
+    "relevant": true,
+    "relevant_document": "retrieval.txt"
+  },
+  {
+    "query": "明天上海的温度是多少？",
+    "expected": "资料不足",
+    "relevant": false,
+    "relevant_document": null
+  },
+  {
+    "query": "财务报销额度是多少？",
+    "expected": "资料不足",
+    "relevant": false,
+    "relevant_document": null
+  }
+]

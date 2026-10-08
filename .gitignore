@@ -218,3 +218,23 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# RAG workspace files and local development outputs
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+node_modules/
+dist/
+data/
+test-results/
+.coverage
+backend/*.egg-info/
+backups/
+.mypy_cache/
+.env.*
+!.env.example
+playwright-report/
+.agents/skills/.openspec-target

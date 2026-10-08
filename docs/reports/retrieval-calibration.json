@@ -1,0 +1,39 @@
+{
+  "status": "calibrated",
+  "scope": "small labeled RAG guide corpus only; not a general production threshold",
+  "threshold": 0.5481,
+  "max_negative_score": 0.3255405517325617,
+  "min_relevant_score": 0.7705724496504549,
+  "branch_comparison": {
+    "lexical": {
+      "top1_hits": 5,
+      "top3_hits": 6,
+      "positive_queries": 6
+    },
+    "vector": {
+      "top1_hits": 6,
+      "top3_hits": 6,
+      "positive_queries": 6
+    },
+    "fused": {
+      "top1_hits": 6,
+      "top3_hits": 6,
+      "positive_queries": 6
+    },
+    "reranked": {
+      "top1_hits": 6,
+      "top3_hits": 6,
+      "positive_queries": 6
+    }
+  },
+  "models": {
+    "embedding": "qwen3.7-text-embedding-flash",
+    "rerank": "qwen3.7-text-rerank"
+  },
+  "parameters": {
+    "retrieval_limit": 40,
+    "rrf_k": 60,
+    "context_chunks": 8,
+    "relevance_threshold": null
+  }
+}

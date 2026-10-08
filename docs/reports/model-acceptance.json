@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "kind": "real-external-api-with-local-ocr",
+  "models": {
+    "embedding": {"model": "qwen3.7-text-embedding-flash", "dimension": 1024, "smoke_seconds": 0.707},
+    "rerank": {"model": "qwen3.7-text-rerank", "smoke_seconds": 0.699, "relevant_score": 0.8174470431565476, "irrelevant_score": 0.2342053483909975},
+    "generation": {"model": "deepseek-flash", "smoke_seconds": 1.434, "response_chars": 66}
+  },
+  "end_to_end": {
+    "documents": [
+      {"name": "guide.txt", "seconds": 2.989, "elements": 1},
+      {"name": "guide.docx", "seconds": 0.976, "elements": 6},
+      {"name": "guide.doc", "seconds": 2.067, "elements": 6},
+      {"name": "text.pdf", "seconds": 0.948, "elements": 1, "extraction": ["text"]},
+      {"name": "scanned.pdf", "seconds": 124.256, "elements": 1, "extraction": ["ocr"]},
+      {"name": "mixed.pdf", "seconds": 110.220, "elements": 2, "extraction": ["text", "ocr"]}
+    ],
+    "rounds": [
+      {"query": "知识库支持哪些格式？", "seconds": 3.082, "source_count": 8},
+      {"question": "它支持扫描件吗？", "rewritten_query": "知识库是否支持扫描件？", "seconds": 3.445, "source_count": 8}
+    ],
+    "calls": {
+      "description": "Embedding 用于文件索引和两轮查询，索引允许缓存复用；两轮各执行重排序，DeepSeek 执行两次流式回答与一次追问改写。此记录不将逻辑流程数量当作含重试的 HTTP 请求计数。",
+      "degraded": false,
+      "unchanged_upload_skipped": true,
+      "local_ocr": true,
+      "acceptance_data_cleaned": true
+    }
+  }
+}

@@ -1,0 +1,91 @@
+name: rag-workspace
+services:
+  migrate:
+    build:
+      context: ./backend
+      target: core
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      RAG_DATABASE_URL: postgresql+psycopg://rag:${POSTGRES_PASSWORD:-rag}@postgres:5432/rag
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+  api:
+    mem_limit: 1g
+    build:
+      context: ./backend
+      target: core
+    env_file:
+      - path: .env
+        required: false
+    environment: &backend_env
+      RAG_DATABASE_URL: postgresql+psycopg://rag:${POSTGRES_PASSWORD:-rag}@postgres:5432/rag
+      RAG_QDRANT_URL: http://qdrant:6333
+      RAG_STORAGE_ROOT: /data/storage
+      RAG_SOURCES_ROOT: /data/sources
+      RAG_OCR_MODEL_ROOT: /data/models
+    volumes: &backend_volumes
+      - storage_data:/data/storage
+      - model_data:/data/models
+      - ${SOURCES_HOST_PATH:-./data/sources}:/data/sources:ro
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      qdrant:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/ready')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+  worker:
+    mem_limit: 8g
+    cpus: 2
+    build:
+      context: ./backend
+      target: worker
+    env_file:
+      - path: .env
+        required: false
+    environment: *backend_env
+    volumes: *backend_volumes
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      qdrant:
+        condition: service_started
+    restart: unless-stopped
+  frontend:
+    build: ./frontend
+    ports: ["127.0.0.1:${FRONTEND_PORT:-8080}:80"]
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+  postgres:
+    image: postgres:17.6
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rag}
+      POSTGRES_DB: rag
+    ports: ["127.0.0.1:55432:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  qdrant:
+    image: qdrant/qdrant:v1.18.3
+    ports: ["127.0.0.1:56333:6333"]
+    volumes: ["qdrant_data:/qdrant/storage"]
+volumes:
+  postgres_data:
+  qdrant_data:
+  storage_data:
+  model_data:

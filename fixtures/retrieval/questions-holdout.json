@@ -1,0 +1,6 @@
+[
+  {"query":"扫描的 PDF 可以直接导入吗？","expected":"本地 OCR","relevant":true,"relevant_document":"ingestion.txt"},
+  {"query":"目录里的资料被移除后什么时候清理？","expected":"完整扫描成功后","relevant":true,"relevant_document":"synchronization.txt"},
+  {"query":"股票明天会涨吗？","expected":"资料不足","relevant":false,"relevant_document":null},
+  {"query":"休假申请最多几天？","expected":"资料不足","relevant":false,"relevant_document":null}
+]

@@ -1,0 +1,11 @@
+export interface KB{id:string;name:string;description:string;status:string;index_config_id:string}
+export interface Source{id:string;name:string;kind:'upload'|'directory';path:string;interval_seconds:number;last_scan_at:string|null;scan_complete:boolean}
+export interface Doc{id:string;name:string;relative_path:string;status:string;error:string;active_version_id:string|null}
+export interface Job{id:string;kind:string;status:string;phase:string;progress:number;error:string;counts:Record<string,number>;created_at:string}
+export interface Provenance{section:string[];pages:number[];start:number;end:number;counter:string;budget_count:number}
+export interface Citation{id:string;number:number;name:string;original:string;provenance:Provenance;document_available?:boolean}
+export interface Chunk{id:string;original:string;provenance:Provenance}
+export interface Conversation{id:string;title:string;active_request:string|null}
+export interface Message{id:string;role:'user'|'assistant';content:string;status:string;sources:Citation[];meta:{degraded?:string[];error?:string};request_key:string;kb_id:string|null}
+export interface System{sources_root:string;max_upload_bytes:number;models:Record<string,{model:string;configured:boolean}>;chunking:Record<string,string|number>}
+export interface UploadResult{files:{path:string;status:string;error?:string;job_id?:string}[]}

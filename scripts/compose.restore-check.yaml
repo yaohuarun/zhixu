@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:17.6
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: restore-check-only
+      POSTGRES_DB: rag
+    ports: ["127.0.0.1:55433:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+  qdrant:
+    image: qdrant/qdrant:v1.18.3
+    ports: ["127.0.0.1:56334:6333"]
+    volumes: ["qdrant_data:/qdrant/storage"]
+  files:
+    image: rag-workspace-api:latest
+    volumes: ["storage_data:/data/storage", "model_data:/data/models"]
+    entrypoint: ["tar"]
+volumes:
+  postgres_data:
+  qdrant_data:
+  storage_data:
+  model_data:

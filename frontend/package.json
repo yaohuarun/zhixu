@@ -1,0 +1,9 @@
+{
+  "name": "rag-workspace-ui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {"dev": "vite --host 127.0.0.1", "build": "vue-tsc --noEmit && vite build", "typecheck": "vue-tsc --noEmit"},
+  "dependencies": {"vue": "3.5.13", "lucide-vue-next": "0.468.0"},
+  "devDependencies": {"@vitejs/plugin-vue": "5.2.3", "vite": "6.3.5", "typescript": "5.7.3", "vue-tsc": "2.2.8", "@types/node": "22.15.3", "@playwright/test": "1.51.1"}
+}
